@@ -1,6 +1,6 @@
 import {Component, Input, OnChanges, ViewEncapsulation} from '@angular/core';
 import {useOnChanges} from "../../../util/useOnChanges";
-import {take, takeUntil} from "rxjs";
+import {takeUntil} from "rxjs";
 import {useOnDestroy} from "../../../util/useOnDestroy";
 import {useHostBinding} from "../../../util/useHostBinding";
 
@@ -17,28 +17,34 @@ export class UseOnChangesComponentChild implements OnChanges {
   @Input()
   value = false;
 
+  @Input()
+  otherValue = '';
+
   background = useHostBinding('red', false);
 
-  onValueChange = useOnChanges(this, "value")
-    .pipe(
-      takeUntil(useOnDestroy())
-    )
-    .subscribe(() => {
-      const oldValue = this.background.get();
-      this.background.set(!oldValue);
-    })
+  constructor() {
+    useOnChanges(this, "value")
+      .pipe(
+        takeUntil(useOnDestroy())
+      )
+      .subscribe(() => {
+        const oldValue = this.background.get();
+        this.background.set(!oldValue);
+      });
+  }
 
-  ngOnChanges(): void {}
+  ngOnChanges(): void {
+  }
 
 }
 
 @Component({
   selector: 'app-use-on-changes',
   template: `
-      <div style="display: flex; height: 500px; width: 100%; align-items: center; justify-content: center;">
-          <button (click)="value = !value">Toggle</button>
-          <app-use-on-changes-child [value]="value"></app-use-on-changes-child>
-      </div>
+    <div style="display: flex; height: 500px; width: 100%; align-items: center; justify-content: center;">
+      <button (click)="value = !value">Toggle</button>
+      <app-use-on-changes-child [value]="value"></app-use-on-changes-child>
+    </div>
   `,
   styles: [`
     app-use-on-changes {

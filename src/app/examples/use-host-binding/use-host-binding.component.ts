@@ -28,7 +28,8 @@ export class UseHostBindingComponent implements OnInit, DoCheck {
 
   private readonly onDestroy$ = useOnDestroy();
 
-  constructor(private readonly ngZone: NgZone) {}
+  constructor(private readonly ngZone: NgZone) {
+  }
 
   ngDoCheck(): void {
     console.log('DoCheck called!');
@@ -41,7 +42,7 @@ export class UseHostBindingComponent implements OnInit, DoCheck {
         .subscribe(() => {
           const oldValue = this.background.get();
           this.background.set(!oldValue);
-        })
+        });
     })
   }
 

@@ -6,7 +6,6 @@ export function useHostBinding(className: string, enabledByDefault: boolean) {
 
   let value = enabledByDefault;
 
-
   if (value) {
     renderer2.addClass(nativeElement, className);
   }

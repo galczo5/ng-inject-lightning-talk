@@ -16,7 +16,7 @@ export function useZonelessHostListen<T extends Event>(eventName: string) {
       .subscribe(value =>
         events$.next(value)
       );
-  })
+  });
 
   return events$.asObservable();
 }

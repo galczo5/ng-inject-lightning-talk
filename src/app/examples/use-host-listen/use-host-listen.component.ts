@@ -1,7 +1,7 @@
 import {Component, DoCheck, ViewEncapsulation} from '@angular/core';
 import {useHostBinding} from "../../../util/useHostBinding";
 import {useOnDestroy} from "../../../util/useOnDestroy";
-import {takeUntil, tap} from "rxjs";
+import {takeUntil} from "rxjs";
 import {useHostListen} from "../../../util/useHostListen";
 
 @Component({
@@ -25,19 +25,18 @@ import {useHostListen} from "../../../util/useHostListen";
 })
 export class UseHostListenComponent implements DoCheck {
 
-  private readonly onDestroy$ = useOnDestroy();
-
   background = useHostBinding('red', false);
 
-  onMouseEnter = useHostListen('mouseenter')
-    .pipe(
-      tap(() => {
+  constructor() {
+    useHostListen('mouseenter')
+      .pipe(
+        takeUntil(useOnDestroy())
+      )
+      .subscribe(() => {
         const oldValue = this.background.get();
         this.background.set(!oldValue);
-      }),
-      takeUntil(this.onDestroy$)
-    )
-    .subscribe();
+      });
+  }
 
   ngDoCheck(): void {
     console.log('DoCheck called!');

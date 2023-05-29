@@ -1,4 +1,5 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-root',
@@ -11,4 +12,11 @@ import {Component} from '@angular/core';
   `
 })
 export class AppComponent {
+
+  @Input()
+  thisMethodNeedChangeDetectionToPassValue!: string;
+
+  @Input()
+  thisMethodDoesNotNeedChangeDetectionToPassValue!: Observable<string>;
+
 }
